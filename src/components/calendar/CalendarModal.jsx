@@ -32,13 +32,13 @@ const initEvent = {
 
 
 export const CalendarModal = () => {
-    const [dateStart, setDateStart] = useState( now.toDate());
-    const [dateEnd, setDateEnd] = useState( nowPlus1.toDate());
+    
     const [titleValid, setTitleValid] = useState( true );
 
-    const {modalOpen} = useSelector( state => state.ui );
+    const {modalOpen, start:modalStart, end:modalEnd} = useSelector( state => state.ui );
     const {activeEvent} = useSelector( state => state.calendar );
-
+    initEvent.start = modalStart;
+    initEvent.end = modalEnd;
     const dispatch = useDispatch();
 
     const [formValues, setFormValues] = useState(initEvent);

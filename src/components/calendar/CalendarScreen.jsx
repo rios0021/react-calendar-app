@@ -7,7 +7,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 
 import { Navbar } from '../ui/Navbar';
 import { AddNewFab } from '../ui/AddNewFab';
-import { uiOpenModal } from '../../actions/ui';
+import { uiOpenModal, uiSetDates } from '../../actions/ui';
 import { CalendarEvent } from './CalendarEvent';
 import { CalendarModal } from './CalendarModal';
 import { eventClearActive, eventSetActive, eventStartLoading } from '../../actions/event';
@@ -27,7 +27,7 @@ export const CalendarScreen = () => {
     }, [dispatch]);
 
     const onDoubleClick = (e) => {
-        dispatch(uiOpenModal())
+        dispatch(uiOpenModal());
     }
     const onSelectEvent = (e) => {
         dispatch(eventSetActive(e));
@@ -38,6 +38,16 @@ export const CalendarScreen = () => {
     }
     const onSelectSlot = (e) => {
         dispatch(eventClearActive());
+        if(e.action === 'doubleClick' | e.action === "select"){
+            
+            let start = moment(e.start).toDate();
+            let end = moment(e.end).toDate();
+            if(e.action ==='doubleClick')  {
+            end = moment(e.end).subtract(1, 'minutes').toDate();
+            }
+            dispatch(uiSetDates(start,end));
+            dispatch(uiOpenModal());
+        }
     }
 
     const eventStyleGetter = (event, start, end, isSelected) => {
